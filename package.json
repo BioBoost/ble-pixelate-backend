@@ -1,0 +1,24 @@
+{
+  "name": "ble-pixelate-backend",
+  "version": "1.0.0",
+  "description": "Backend for the PixelAte project.",
+  "main": "src/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BioBoost/ble-pixelate-backend.git"
+  },
+  "keywords": [
+    "pixelate",
+    "mememachine",
+    "touchberry"
+  ],
+  "author": "Nico De Witte",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BioBoost/ble-pixelate-backend/issues"
+  },
+  "homepage": "https://github.com/BioBoost/ble-pixelate-backend#readme"
+}
