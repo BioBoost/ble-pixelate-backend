@@ -14,7 +14,7 @@ class Display {
   }
 
   pixel(x, y, color) {
-    this.context.fillStyle = `rgb(255, 139, 0)`;
+    this.context.fillStyle = `rgb(250, 0, 0)`;
     this.context.fillRect(x, y, 1, 1);
   }
   
