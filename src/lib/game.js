@@ -41,6 +41,11 @@ class Game {
     this.display.render();
   }
 
+  explosion(controllerId) {
+    let player = this.players[controllerId];
+    this.display.arc(player.location.x, player.location.y, 5, 0, 2*Math.PI, player.color);
+  }
+
   /////////////// Internal methods /////////////////
   static SPAWN_DISTANCE = 10;
 
