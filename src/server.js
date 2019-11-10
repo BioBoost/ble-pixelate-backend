@@ -2,7 +2,7 @@
 const Game = require('./lib/game');
 
 // Game start
-let game = new Game();
+let game = new Game(false);
 let start = [
   { controller_id: 'id_pinky', name: 'nico', color: "#FF0000" },
   { controller_id: 'id_hulk', name: 'marki', color: "#00FF00" },
@@ -19,14 +19,28 @@ game.move_down('id_pinky', 5);
 game.move_right('id_pinky', 10);
 game.move_up('id_pinky', 10);
 
-game.move_right('id_hulk', 20);
-game.move_up('id_hulk', 20);
-game.move_right('id_hulk', 20);
-game.move_right('id_hulk', 20);
-game.move_right('id_hulk', 20);
-game.move_right('id_hulk', 20);
+game.move_right('id_rdr2', 20);
+game.move_up('id_rdr2', 20);
+game.move_right('id_rdr2', 20);
+game.move_right('id_rdr2', 20);
+game.move_right('id_rdr2', 20);
+game.move_right('id_rdr2', 20);
+game.move_up('id_rdr2', 20);
+game.move_up('id_rdr2', 20);
+game.move_up('id_rdr2', 20);
+game.move_up('id_rdr2', 22);
+game.move_right('id_rdr2', 20);
+
 game.move_right('id_hulk', 20);
 game.move_down('id_hulk', 20);
+game.move_down('id_hulk', 20);
+game.move_down('id_hulk', 20);
+game.move_right('id_hulk', 20);
+game.move_right('id_hulk', 20);
+game.move_right('id_hulk', 20);
+game.move_right('id_hulk', 20);
+game.move_right('id_hulk', 20);
+
 
 game.render();
 

@@ -3,9 +3,13 @@ const Player = require('./player');
 
 class Game {
 
-  constructor() {
-    this.display = new Display(96, 64);
+  static PLAYFIELD_WIDTH = 96;
+  static PLAYFIELD_HEIGHT = 64;
+
+  constructor(enableBoundaries=true) {
+    this.display = new Display(Game.PLAYFIELD_WIDTH, Game.PLAYFIELD_HEIGHT);
     this.players = [];
+    this.enableBoundaries = enableBoundaries;
   }
 
   add_player(name, controllerId, color="#00FF00") {
@@ -33,22 +37,12 @@ class Game {
     this.move(controllerId, -pixels, 0);
   }
 
-  move(controllerId, deltaX, deltaY) {
-    let player = this.players[controllerId];
-    let startLocation = player.location;
-
-    let endLocation = this.determine_end_location(startLocation, deltaX, deltaY);
-    console.log(`Moving player ${controllerId} from ${JSON.stringify(startLocation)} to ${JSON.stringify(endLocation)}`);
-    this.display.line(startLocation, endLocation, player.color);
-    player.move(endLocation);
-  }
-
   render() {
     this.display.render();
   }
 
   /////////////// Internal methods /////////////////
-  static SPAWN_DISTANCE = 20;
+  static SPAWN_DISTANCE = 5;
 
   spawn_all_players() {
     this.generate_spawn_locations();
@@ -73,16 +67,68 @@ class Game {
     });
   }
 
-  determine_end_location(startLocation, deltaX, deltaY) {
+  // Limited to single direction !!
+  // Otherwise behavior is undefined
+  move(controllerId, deltaX, deltaY) {
+    // Limit delta
+    deltaX = deltaX % Game.PLAYFIELD_WIDTH;
+    deltaY = deltaY % Game.PLAYFIELD_HEIGHT;
+
+    let player = this.players[controllerId];
+    let startLocation = player.location;
+
     let endLocation = {
       x: startLocation.x + deltaX,
       y: startLocation.y + deltaY
     };
 
-    endLocation.x = Math.max(0, Math.min(endLocation.x, this.display.width-1));
-    endLocation.y = Math.max(0, Math.min(endLocation.y, this.display.height-1));
+    if (this.enableBoundaries) {
+      endLocation.x = Math.max(0, Math.min(endLocation.x, Game.PLAYFIELD_WIDTH-1));
+      endLocation.y = Math.max(0, Math.min(endLocation.y, Game.PLAYFIELD_HEIGHT-1));
+      this.display.line(startLocation, endLocation, player.color);
+    } else {
+      let path = this.determine_path_to_unbound_end_location(startLocation, endLocation);
+      path.forEach((segment) => this.display.line(segment.from, segment.to, player.color));
+      endLocation = path[path.length-1].to;
+    }
 
-    return endLocation;
+    console.log(`Moving player ${controllerId} from ${JSON.stringify(startLocation)} to ${JSON.stringify(endLocation)}`);
+    player.move(endLocation);
+  }
+
+  determine_path_to_unbound_end_location(from, to) {
+    let path = [];
+    const MAX_X = Game.PLAYFIELD_WIDTH-1;
+    const MAX_Y = Game.PLAYFIELD_HEIGHT-1;
+
+    if (to.y < 0) {
+      path = [
+        { from: from, to: { x: to.x, y: 0 } },
+        { from: {x: to.x, y: MAX_Y}, to: { x: to.x, y: to.y+(MAX_Y+1) } }
+      ];
+    } else if (to.y > MAX_Y) {
+      path = [
+        { from: from, to: { x: to.x, y: MAX_Y } },
+        { from: {x: from.x, y: 0}, to: { x: to.x, y: to.y-(MAX_Y+1) } }
+      ];
+    } else if (to.x < 0) {
+      path = [
+        { from: from, to: { x: 0, y: to.y } },
+        { from: {x: MAX_X, y: from.y}, to: { x: to.x+(MAX_X+1), y: to.y } }
+      ];
+    } else if (to.x > MAX_X) {
+      path = [
+        { from: from, to: { x: MAX_X, y: to.y } },
+        { from: {x: 0, y: from.y}, to: { x: to.x-(MAX_X+1), y: to.y } }
+      ];
+    }
+    else {
+      path = [
+        { from: from, to: to }
+      ]
+    }
+    
+    return path;
   }
 
 }
