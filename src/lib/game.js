@@ -48,6 +48,7 @@ class Game {
     this.generate_spawn_locations();
     Object.values(this.players).forEach((player) => {
       this.display.pixel(player.location.x, player.location.y, player.color);
+      console.log(`Player ${JSON.stringify(player)} spawned`);
     });
   }
 
