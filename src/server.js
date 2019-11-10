@@ -6,11 +6,11 @@ let game = new Game();
 let start = [
   { controller_id: 'id_pinky', name: 'nico', color: "#FF0000" },
   { controller_id: 'id_hulk', name: 'marki', color: "#00FF00" },
-  // 'id_rdr2': { playername: 'johhny' },
+  { controller_id: 'id_rdr2', name: 'johhny', color: "#0000FF" },
 ];
 
 start.forEach((player) => {
-  game.add_player(player.name, player.controller_id);
+  game.add_player(player.name, player.controller_id, "#8B008B");
 });
 
 game.start();
