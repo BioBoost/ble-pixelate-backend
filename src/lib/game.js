@@ -42,7 +42,7 @@ class Game {
   }
 
   /////////////// Internal methods /////////////////
-  static SPAWN_DISTANCE = 5;
+  static SPAWN_DISTANCE = 10;
 
   spawn_all_players() {
     this.generate_spawn_locations();

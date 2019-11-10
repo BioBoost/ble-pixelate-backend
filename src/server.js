@@ -15,54 +15,29 @@ start.forEach((player) => {
 
 game.start();
 
-game.move_down('id_pinky', 5);
-game.move_right('id_pinky', 10);
-game.move_up('id_pinky', 10);
+// Updates are coming in
+let updates = {
+  'id_pinky': [
+    'D', 'D', 'X', 'R', 'R' 
+  ],
+  'id_hulk': [
+    'A', 'D', 'D', 'R', 'D' 
+  ]
+};
 
-game.move_right('id_rdr2', 20);
-game.move_up('id_rdr2', 20);
-game.move_right('id_rdr2', 20);
-game.move_right('id_rdr2', 20);
-game.move_right('id_rdr2', 20);
-game.move_right('id_rdr2', 20);
-game.move_up('id_rdr2', 20);
-game.move_up('id_rdr2', 20);
-game.move_up('id_rdr2', 20);
-game.move_up('id_rdr2', 22);
-game.move_right('id_rdr2', 20);
-
-game.move_right('id_hulk', 20);
-game.move_down('id_hulk', 20);
-game.move_down('id_hulk', 20);
-game.move_down('id_hulk', 20);
-game.move_right('id_hulk', 20);
-game.move_right('id_hulk', 20);
-game.move_right('id_hulk', 20);
-game.move_right('id_hulk', 20);
-game.move_right('id_hulk', 20);
-
+Object.keys(updates).forEach((id) => {
+  updates[id].forEach((action) => {
+    switch (action) {
+      case 'D': game.move_down(id, 5); break;
+      case 'U': game.move_up(id, 5); break;
+      case 'L': game.move_left(id, 5); break;
+      case 'R': game.move_right(id, 5); break;
+    }
+  });
+});
 
 game.render();
 
-// // Updates are coming in
-// let updates = {
-//   'id_pinky': [
-//     'D', 'D', 'X', 'R', 'R' 
-//   ],
-//   'id_hulk': [
-//     'A', 'D', 'D', 'R', 'D' 
-//   ],
-//   'ids': ['id_pinky', 'id_hulk']
-// };
-
-// updates.ids.forEach(id => {
-//   updates[id].forEach((action) => {
-//     if (action == 'D') game.move_down(id);
-//     else if (action == 'R') game.move_right(id);
-//   });
-// });
-
-// game.render();
 
 // io.on('connection', client => {
 //   console.log('Frontend connected');
