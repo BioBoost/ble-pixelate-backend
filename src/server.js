@@ -1,18 +1,14 @@
 const io = require('socket.io')();
 const Game = require('./lib/game');
 
-// // Updates are coming in
-// let updates = {
-//   'id_pinky': [
-//     'D', 'D', 'X', 'R', 'R' 
-//   ],
-//   'id_hulk': [
-//     'A', 'D', 'D', 'R', 'D' 
-//   ]
-// };
+// Updates are coming in
+// let updates = [
+//   { id: 'id_hulk', actions: ['R', 'D', 'D', 'X', 'R', 'R'] },
+//   { id: 'id_pinky', actions: ['A', 'D', 'D', 'R', 'D'] }
+// ]
 
-// Object.keys(updates).forEach((id) => {
-//   updates[id].forEach((action) => {
+// updates.forEach((update) => {
+//   update.actions.forEach((action) => {
 //     switch (action) {
 //       case 'D': game.move_down(id, 5); break;
 //       case 'U': game.move_up(id, 5); break;
@@ -38,6 +34,20 @@ io.on('connection', client => {
 
   client.on('update', (updates) => {
     console.log(`Getting updates ${updates}`);
+
+    let updatesObj = JSON.parse(updates);
+    updatesObj.forEach((update) => {
+      update.actions.forEach((action) => {
+        switch (action) {
+          case 'D': game.move_down(update.id, 5); break;
+          case 'U': game.move_up(update.id, 5); break;
+          case 'L': game.move_left(update.id, 5); break;
+          case 'R': game.move_right(update.id, 5); break;
+        }
+      });
+    });
+
+    game.render();
   });
   
   client.on('disconnect', function(){
