@@ -13,9 +13,21 @@ class Display {
     this.context.clearRect(0, 0, this.width, this.height);
   }
 
-  pixel(x, y, color) {
-    this.context.fillStyle = `rgb(250, 0, 0)`;
+  pixel(x, y, color="#00FF00") {
+    this.context.fillStyle = color;
     this.context.fillRect(x, y, 1, 1);
+  }
+
+  line(startLocation, endLocation, color="#00FF00") {
+    this.context.translate(0.5, 0.5);   // Offset to fix 1px width line
+    this.context.strokeStyle = color;
+    this.context.lineWidth = 1;
+    this.context.lineCap = 'square';
+    this.context.beginPath();
+    this.context.moveTo(startLocation.x, startLocation.y);
+    this.context.lineTo(endLocation.x, endLocation.y);
+    this.context.stroke();
+    this.context.setTransform(1, 0, 0, 1, 0, 0);    // Reset offset
   }
   
   render() {
