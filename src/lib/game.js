@@ -17,6 +17,32 @@ class Game {
     this.render();
   }
 
+  move_down(controllerId, pixels) {
+    this.move(controllerId, 0, pixels);
+  }
+
+  move_up(controllerId, pixels) {
+    this.move(controllerId, 0, -pixels);
+  }
+
+  move_right(controllerId, pixels) {
+    this.move(controllerId, pixels, 0);
+  }
+
+  move_left(controllerId, pixels) {
+    this.move(controllerId, -pixels, 0);
+  }
+
+  move(controllerId, deltaX, deltaY) {
+    let player = this.players[controllerId];
+    let startLocation = player.location;
+
+    let endLocation = this.determine_end_location(startLocation, deltaX, deltaY);
+    console.log(`Moving player ${controllerId} from ${JSON.stringify(startLocation)} to ${JSON.stringify(endLocation)}`);
+    this.display.line(startLocation, endLocation, player.color);
+    player.move(endLocation);
+  }
+
   render() {
     this.display.render();
   }
@@ -45,6 +71,18 @@ class Game {
       });
       i++;
     });
+  }
+
+  determine_end_location(startLocation, deltaX, deltaY) {
+    let endLocation = {
+      x: startLocation.x + deltaX,
+      y: startLocation.y + deltaY
+    };
+
+    endLocation.x = Math.max(0, Math.min(endLocation.x, this.display.width-1));
+    endLocation.y = Math.max(0, Math.min(endLocation.y, this.display.height-1));
+
+    return endLocation;
   }
 
 }

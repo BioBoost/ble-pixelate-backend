@@ -10,11 +10,25 @@ let start = [
 ];
 
 start.forEach((player) => {
-  game.add_player(player.name, player.controller_id, "#8B008B");
+  game.add_player(player.name, player.controller_id, player.color);
 });
 
 game.start();
 
+game.move_down('id_pinky', 5);
+game.move_right('id_pinky', 10);
+game.move_up('id_pinky', 10);
+
+game.move_right('id_hulk', 20);
+game.move_up('id_hulk', 20);
+game.move_right('id_hulk', 20);
+game.move_right('id_hulk', 20);
+game.move_right('id_hulk', 20);
+game.move_right('id_hulk', 20);
+game.move_right('id_hulk', 20);
+game.move_down('id_hulk', 20);
+
+game.render();
 
 // // Updates are coming in
 // let updates = {
