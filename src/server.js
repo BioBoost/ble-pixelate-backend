@@ -3,14 +3,14 @@ const Game = require('./lib/game');
 
 // Game start
 let game = new Game();
-let start = {
-  'id_pinky': { playername: 'nico' },
-  'id_hulk': { playername: 'marki' },
-  'id_rdr2': { playername: 'johhny' },
-};
+let start = [
+  { controller_id: 'id_pinky', name: 'nico', color: "#FF0000" },
+  { controller_id: 'id_hulk', name: 'marki', color: "#00FF00" },
+  // 'id_rdr2': { playername: 'johhny' },
+];
 
-Object.keys(start).forEach((controllerId) => {
-  game.add_player(start[controllerId].playername, controllerId);
+start.forEach((player) => {
+  game.add_player(player.name, player.controller_id);
 });
 
 game.start();
