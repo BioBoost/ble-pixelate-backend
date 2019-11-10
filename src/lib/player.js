@@ -5,6 +5,7 @@ class Player {
     this.controllerId = controllerId;
     this.color = color;
     this.move({x: 0, y: 0});
+    this.direction = 'U';
   }
 
   move(location) {

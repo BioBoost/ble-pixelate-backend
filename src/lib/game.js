@@ -23,18 +23,22 @@ class Game {
 
   move_down(controllerId, pixels) {
     this.move(controllerId, 0, pixels);
+    this.players[controllerId].direction = 'D';
   }
 
   move_up(controllerId, pixels) {
     this.move(controllerId, 0, -pixels);
+    this.players[controllerId].direction = 'U';
   }
 
   move_right(controllerId, pixels) {
     this.move(controllerId, pixels, 0);
+    this.players[controllerId].direction = 'R';
   }
 
   move_left(controllerId, pixels) {
     this.move(controllerId, -pixels, 0);
+    this.players[controllerId].direction = 'L';
   }
 
   render() {
@@ -44,6 +48,16 @@ class Game {
   explosion(controllerId) {
     let player = this.players[controllerId];
     this.display.arc(player.location.x, player.location.y, 5, 0, 2*Math.PI, player.color);
+  }
+
+  laser(controllerId) {
+    let player = this.players[controllerId];
+    switch(player.direction) {
+      case 'U': this.display.line(player.location, {x: player.location.x, y: 0}, player.color); break;
+      case 'D': this.display.line(player.location, {x: player.location.x, y: Game.PLAYFIELD_HEIGHT-1}, player.color); break;
+      case 'L': this.display.line(player.location, {x: 0, y: player.location.y}, player.color); break;
+      case 'R': this.display.line(player.location, {x: Game.PLAYFIELD_WIDTH-1, y: player.location.y}, player.color); break;
+    }
   }
 
   /////////////// Internal methods /////////////////
