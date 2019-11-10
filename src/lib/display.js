@@ -6,7 +6,8 @@ class Display {
     this.width = width;
     this.height = height;
     this.canvas = createCanvas(width, height);
-    this.context = this.canvas.getContext('2d');
+    this.context = this.canvas.getContext('2d', { alpha: false });
+    this.context.antialias = 'none';    // Fixes blurry borders
   }
 
   clear() {
@@ -27,7 +28,16 @@ class Display {
     this.context.moveTo(startLocation.x, startLocation.y);
     this.context.lineTo(endLocation.x, endLocation.y);
     this.context.stroke();
+    this.context.closePath();
     this.context.setTransform(1, 0, 0, 1, 0, 0);    // Reset offset
+  }
+
+  arc(x, y, radius, startAngle, endAngle, color="#00FF00") {
+    this.context.fillStyle = color;
+    this.context.beginPath();
+    this.context.arc(x, y, radius, startAngle, endAngle);
+    this.context.fill();
+    this.context.closePath();
   }
   
   render() {
