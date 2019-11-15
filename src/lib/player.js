@@ -1,8 +1,10 @@
 class Player {
 
-  constructor(name, world) {
+  constructor(name, world, color) {
     this.name = name;
     this.world = world;
+    this.color = color;
+    this.claimColor = color.darken(0.5);
     this.go_down();
     this.move({ x: 0, y: 0 });
   }
@@ -47,7 +49,15 @@ class Player {
 
   render(display) {
     // Just draw the head as a highlighted pixel
-    display.pixel(this.location.x, this.location.y);
+    display.pixel(this.location.x, this.location.y, this.color);
+  }
+
+  color() {
+    return this.baseColor;
+  }
+
+  claim_color() {
+    return this.claimColor;
   }
 
   /////// Private methods ///////////////

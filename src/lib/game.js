@@ -21,8 +21,8 @@ class Game {
     this.players = [];
   }
 
-  add_player(name, controllerId) {
-    this.players[controllerId] = new Player(name, this.world);
+  add_player(name, controllerId, color) {
+    this.players[controllerId] = new Player(name, this.world, color);
     this.engine.register_model(this.players[controllerId]);
   }
 

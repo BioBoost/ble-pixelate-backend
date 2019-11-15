@@ -1,4 +1,5 @@
-const { createCanvas, loadImage } = require('canvas')
+const { createCanvas, loadImage } = require('canvas');
+const Color = require('color');
 
 class Display {
   constructor(width, height) {
@@ -14,12 +15,12 @@ class Display {
     this.context.clearRect(0, 0, this.width, this.height);
   }
 
-  pixel(x, y, color="#00FF00") {
+  pixel(x, y, color) {
     this.context.fillStyle = color;
     this.context.fillRect(x, y, 1, 1);
   }
 
-  line(startLocation, endLocation, color="#00FF00") {
+  line(startLocation, endLocation, color) {
     this.context.translate(0.5, 0.5);   // Offset to fix 1px width line
     this.context.strokeStyle = color;
     this.context.lineWidth = 1;
@@ -32,7 +33,7 @@ class Display {
     this.context.setTransform(1, 0, 0, 1, 0, 0);    // Reset offset
   }
 
-  arc(x, y, radius, startAngle, endAngle, color="#00FF00") {
+  arc(x, y, radius, startAngle, endAngle, color) {
     this.context.fillStyle = color;
     this.context.beginPath();
     this.context.arc(x, y, radius, startAngle, endAngle);

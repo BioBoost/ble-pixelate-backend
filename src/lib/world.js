@@ -18,7 +18,7 @@ class World {
       for (let y = 0; y < this.height; y++) {
         let owner = this.playfield[x][y];
         if (owner) {
-          display.pixel(x, y, "#FF0000");
+          display.pixel(x, y, owner.claim_color());
         }
       }
     }
