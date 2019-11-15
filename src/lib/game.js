@@ -2,179 +2,19 @@ const Display = require('./display');
 const Player = require('./player');
 const FileRenderer = require('./renderers/file_renderer');
 const MemeTvRenderer = require('./renderers/meme_tv_renderer');
+const World = require('./world');
+
+const Engine = require('./pixel_engine');
 
 class Game {
 
-  static PLAYFIELD_WIDTH = 96;
-  static PLAYFIELD_HEIGHT = 64;
+  constructor() {
+    this.engine = new PixelEngine();
 
-  constructor(enableBoundaries=true) {
-    this.display = new Display(Game.PLAYFIELD_WIDTH, Game.PLAYFIELD_HEIGHT);
-    this.players = [];
-    this.enableBoundaries = enableBoundaries;
-    this.display.add_renderer(new FileRenderer(`${__dirname}/test.png`));
-    this.display.add_renderer(new MemeTvRenderer('http://172.16.0.70/'));
+    // When set to go
+    this.engine.init();
   }
 
-  add_player(name, controllerId, color="#00FF00") {
-    this.players[controllerId] = new Player(name, controllerId, color);
-  }
-
-  start() {
-    this.spawn_all_players();
-    this.render();
-  }
-
-  move_down(controllerId, pixels) {
-    this.move(controllerId, 0, pixels);
-    this.players[controllerId].direction = 'D';
-  }
-
-  move_up(controllerId, pixels) {
-    this.move(controllerId, 0, -pixels);
-    this.players[controllerId].direction = 'U';
-  }
-
-  move_right(controllerId, pixels) {
-    this.move(controllerId, pixels, 0);
-    this.players[controllerId].direction = 'R';
-  }
-
-  move_left(controllerId, pixels) {
-    this.move(controllerId, -pixels, 0);
-    this.players[controllerId].direction = 'L';
-  }
-
-  render() {
-    this.display.render();
-  }
-
-  explosion(controllerId) {
-    let player = this.players[controllerId];
-    this.display.arc(player.location.x, player.location.y, 5, 0, 2*Math.PI, player.color);
-  }
-
-  laser(controllerId) {
-    let player = this.players[controllerId];
-    switch(player.direction) {
-      case 'U': this.display.line(player.location, {x: player.location.x, y: 0}, player.color); break;
-      case 'D': this.display.line(player.location, {x: player.location.x, y: Game.PLAYFIELD_HEIGHT-1}, player.color); break;
-      case 'L': this.display.line(player.location, {x: 0, y: player.location.y}, player.color); break;
-      case 'R': this.display.line(player.location, {x: Game.PLAYFIELD_WIDTH-1, y: player.location.y}, player.color); break;
-    }
-  }
-
-  static X_MARK_SIZE = 12;
-  mark_x(controllerId) {
-    let player = this.players[controllerId];
-    
-    this.display.line({
-      x: player.location.x-Game.X_MARK_SIZE/2,
-      y: player.location.y-Game.X_MARK_SIZE/2
-    }, {
-      x: player.location.x+Game.X_MARK_SIZE/2,
-      y: player.location.y+Game.X_MARK_SIZE/2
-    }, player.color);
-    
-    this.display.line({
-      x: player.location.x+Game.X_MARK_SIZE/2,
-      y: player.location.y-Game.X_MARK_SIZE/2
-    }, {
-      x: player.location.x-Game.X_MARK_SIZE/2,
-      y: player.location.y+Game.X_MARK_SIZE/2
-    }, player.color);
-  }
-
-  /////////////// Internal methods /////////////////
-  static SPAWN_DISTANCE = 10;
-
-  spawn_all_players() {
-    this.generate_spawn_locations();
-    Object.values(this.players).forEach((player) => {
-      this.display.pixel(player.location.x, player.location.y, player.color);
-      console.log(`Player ${JSON.stringify(player)} spawned`);
-    });
-  }
-
-  generate_spawn_locations() {
-    // Spawn players in a circle around mid
-    let numberOfPlayers = Object.keys(this.players).length;
-    let deltaAngle = (360 / numberOfPlayers * Math.PI) / 180;
-    let offset = Math.random();   // Randomize start locations each game
-
-    let i = 0;
-    Object.values(this.players).forEach((player) => {
-      player.move({
-        x: this.display.width/2 + Math.floor(Game.SPAWN_DISTANCE * Math.cos(offset + i * deltaAngle)),
-        y: this.display.height/2 + Math.floor(Game.SPAWN_DISTANCE * Math.sin(offset + i * deltaAngle))
-      });
-      i++;
-    });
-  }
-
-  // Limited to single direction !!
-  // Otherwise behavior is undefined
-  move(controllerId, deltaX, deltaY) {
-    // Limit delta
-    deltaX = deltaX % Game.PLAYFIELD_WIDTH;
-    deltaY = deltaY % Game.PLAYFIELD_HEIGHT;
-
-    let player = this.players[controllerId];
-    let startLocation = player.location;
-
-    let endLocation = {
-      x: startLocation.x + deltaX,
-      y: startLocation.y + deltaY
-    };
-
-    if (this.enableBoundaries) {
-      endLocation.x = Math.max(0, Math.min(endLocation.x, Game.PLAYFIELD_WIDTH-1));
-      endLocation.y = Math.max(0, Math.min(endLocation.y, Game.PLAYFIELD_HEIGHT-1));
-      this.display.line(startLocation, endLocation, player.color);
-    } else {
-      let path = this.determine_path_to_unbound_end_location(startLocation, endLocation);
-      path.forEach((segment) => this.display.line(segment.from, segment.to, player.color));
-      endLocation = path[path.length-1].to;
-    }
-
-    console.log(`Moving player ${controllerId} from ${JSON.stringify(startLocation)} to ${JSON.stringify(endLocation)}`);
-    player.move(endLocation);
-  }
-
-  determine_path_to_unbound_end_location(from, to) {
-    let path = [];
-    const MAX_X = Game.PLAYFIELD_WIDTH-1;
-    const MAX_Y = Game.PLAYFIELD_HEIGHT-1;
-
-    if (to.y < 0) {
-      path = [
-        { from: from, to: { x: to.x, y: 0 } },
-        { from: {x: to.x, y: MAX_Y}, to: { x: to.x, y: to.y+(MAX_Y+1) } }
-      ];
-    } else if (to.y > MAX_Y) {
-      path = [
-        { from: from, to: { x: to.x, y: MAX_Y } },
-        { from: {x: from.x, y: 0}, to: { x: to.x, y: to.y-(MAX_Y+1) } }
-      ];
-    } else if (to.x < 0) {
-      path = [
-        { from: from, to: { x: 0, y: to.y } },
-        { from: {x: MAX_X, y: from.y}, to: { x: to.x+(MAX_X+1), y: to.y } }
-      ];
-    } else if (to.x > MAX_X) {
-      path = [
-        { from: from, to: { x: MAX_X, y: to.y } },
-        { from: {x: 0, y: from.y}, to: { x: to.x-(MAX_X+1), y: to.y } }
-      ];
-    }
-    else {
-      path = [
-        { from: from, to: to }
-      ]
-    }
-    
-    return path;
-  }
 
 }
 

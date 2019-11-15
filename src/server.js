@@ -1,6 +1,8 @@
 const io = require('socket.io')();
 const Game = require('./lib/game');
 
+let game = new Game();
+
 // // Game start
 // let game = new Game(false);
 // let start = [
