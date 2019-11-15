@@ -2,13 +2,25 @@ class Player {
 
   constructor(name, world) {
     this.name = name;
-    this.direction = 'D';
     this.world = world;
+    this.go_down();
     this.move({ x: 0, y: 0 });
   }
 
-  change_direction(direction) {
-    this.direction = direction;
+  go_up() { 
+    this.change_direction('up'); 
+  }
+
+  go_down() { 
+    this.change_direction('down'); 
+  }
+
+  go_left() { 
+    this.change_direction('left'); 
+  }
+
+  go_right() { 
+    this.change_direction('right');
   }
 
   move({x = 0, y = 0} = {}) {
@@ -21,7 +33,7 @@ class Player {
   update(delta) {
     // here we just move a single pixel in the
     // current direction and update the world
-    if (this.direction == 'D') {
+    if (this.direction == 'down') {
       this.location.y++;
       this.world.claim_field(this.location, this);
     } // else if ....
@@ -30,6 +42,12 @@ class Player {
   render(display) {
     // Just draw the head as a highlighted pixel
     display.pixel(this.location.x, this.location.y);
+  }
+
+  /////// Private methods ///////////////
+
+  change_direction(direction) {
+    this.direction = direction;
   }
   
 }
