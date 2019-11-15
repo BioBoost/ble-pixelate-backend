@@ -15,15 +15,15 @@ class PixelEngine {
 
   init() {
     this.models.forEach(model => model.init());
-    this.update();
-    this.render();
+    this.start_update();
+    this.start_render();
   } 
 
-  update() {
+  start_update() {
     // Runs at constant tick rate
     const NS_PER_SEC = 1e9;
     let refTime = process.hrtime();
-    setInterval(() => {
+    this.updateInterval = setInterval(() => {
       refTime = process.hrtime(refTime);
       let delta = refTime[0] * NS_PER_SEC + refTime[1];
 
@@ -31,12 +31,17 @@ class PixelEngine {
     }, PixelEngine.TICK_RATE);
   }
 
-  render() {
+  start_render() {
     // Runs as fast as the display allows us
-    setInterval(() => {
+    this.renderInterval = setInterval(() => {
       this.display.clear();
       this.models.forEach(model => model.render(this.display));
     }, PixelEngine.REFRESH_RATE);
+  }
+
+  kill() {
+    if (this.updateInterval) clearInterval(this.updateInterval);
+    if (this.renderInterval) clearInterval(this.renderInterval);
   }
 }
 
