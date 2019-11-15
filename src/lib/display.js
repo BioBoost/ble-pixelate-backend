@@ -1,5 +1,4 @@
 const { createCanvas, loadImage } = require('canvas')
-const fs = require('fs');
 
 class Display {
   constructor(width, height) {
@@ -8,6 +7,7 @@ class Display {
     this.canvas = createCanvas(width, height);
     this.context = this.canvas.getContext('2d', { alpha: false });
     this.context.antialias = 'none';    // Fixes blurry borders
+    this.renderers = [];
   }
 
   clear() {
@@ -39,11 +39,13 @@ class Display {
     this.context.fill();
     this.context.closePath();
   }
+
+  add_renderer(renderer) {
+    this.renderers.push(renderer);
+  }
   
   render() {
-    const out = fs.createWriteStream(__dirname + '/test.png');
-    this.canvas.createPNGStream().pipe(out);
-    out.on('finish', () => console.log('The PNG file was created.'));
+    this.renderers.forEach((renderer) => renderer.render(this.canvas));
   }
 }
 
