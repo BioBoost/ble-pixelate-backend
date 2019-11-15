@@ -35,6 +35,26 @@ class Game {
     this.engine.kill();
   }
 
+  /////////////// Internal methods /////////////////
+  static SPAWN_DISTANCE = 10;
+
+  spawn_all_players() {
+    // Spawn players in a circle around mid
+    let numberOfPlayers = Object.keys(this.players).length;
+    let deltaAngle = (360 / numberOfPlayers * Math.PI) / 180;
+    let offset = Math.random();   // Randomize start locations each game
+
+    let i = 0;
+    Object.values(this.players).forEach((player) => {
+      player.move({
+        x: Game.PLAYFIELD_WIDTH/2 + Math.floor(Game.SPAWN_DISTANCE * Math.cos(offset + i * deltaAngle)),
+        y: Game.PLAYFIELD_HEIGHT/2 + Math.floor(Game.SPAWN_DISTANCE * Math.sin(offset + i * deltaAngle))
+      });
+      i++;
+      console.log(`Player ${JSON.stringify(player)} spawned`);
+    });
+  }
+
 }
 
 module.exports = Game;
