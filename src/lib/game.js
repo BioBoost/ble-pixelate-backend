@@ -1,6 +1,7 @@
 const Display = require('./display');
 const Player = require('./player');
 const FileRenderer = require('./renderers/file_renderer');
+const MemeTvRenderer = require('./renderers/meme_tv_renderer');
 
 class Game {
 
@@ -12,6 +13,7 @@ class Game {
     this.players = [];
     this.enableBoundaries = enableBoundaries;
     this.display.add_renderer(new FileRenderer(`${__dirname}/test.png`));
+    this.display.add_renderer(new MemeTvRenderer('http://172.16.0.70/'));
   }
 
   add_player(name, controllerId, color="#00FF00") {
