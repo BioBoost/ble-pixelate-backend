@@ -1,7 +1,7 @@
 class PixelEngine {
 
-  static TICK_RATE = 15;
-  static REFRESH_RATE = 100;
+  static TICK_RATE = 150;
+  static REFRESH_RATE = 1000;
 
   constructor(display) {
     this.display = display;
@@ -28,6 +28,7 @@ class PixelEngine {
       let delta = refTime[0] * NS_PER_SEC + refTime[1];
 
       this.models.forEach(model => model.update(delta));
+      console.log(`Tick: ${delta}ms`);
     }, PixelEngine.TICK_RATE);
   }
 
@@ -36,6 +37,8 @@ class PixelEngine {
     this.renderInterval = setInterval(() => {
       this.display.clear();
       this.models.forEach(model => model.render(this.display));
+      console.log(`Rendering`);
+      this.display.render();
     }, PixelEngine.REFRESH_RATE);
   }
 
