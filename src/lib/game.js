@@ -4,6 +4,7 @@ const FileRenderer = require('./renderers/file_renderer');
 const MemeTvRenderer = require('./renderers/meme_tv_renderer');
 const World = require('./models/world');
 const PixelEngine = require('./engine/pixel_engine');
+const Controller = require('./controller');
 
 class Game {
   static PLAYFIELD_WIDTH = 96;
@@ -19,11 +20,16 @@ class Game {
     this.world = new World();
     this.engine.register_model(this.world);
     this.players = [];
+    this.controllers = [];
   }
 
   add_player(name, controllerId, color) {
     this.players[controllerId] = new Player(name, this.world, color);
     this.engine.register_model(this.players[controllerId]);
+
+    // Also need to create controller
+    this.controllers[controllerId] = new Controller(controllerId, this.players[controllerId]);
+    this.engine.register_model(this.controllers[controllerId]);
   }
 
   start() {
@@ -37,21 +43,15 @@ class Game {
   }
 
   take_action(controllerId, action) {
-    let player = this.players[controllerId];
-    switch (action) {
-      case 'D': player.go_down(); break;
-      case 'U': player.go_up(); break;
-      case 'L': player.go_left(); break;
-      case 'R': player.go_right(); break;
-      // case 'B': game.explosion(update.id); break;
-      // case 'A': game.laser(update.id); break;
-      // case 'X': game.mark_x(update.id); break;
-    }
+    let controller = this.controller[controllerId];
+    controller.queue_action(action);
   }
 
   /////////////// Internal methods /////////////////
   static SPAWN_DISTANCE = 10;
 
+  // Is this not something the world should provide ????
+  // We can do that if we make the server provide us with all players at once
   spawn_all_players() {
     // Spawn players in a circle around mid
     let numberOfPlayers = Object.keys(this.players).length;
