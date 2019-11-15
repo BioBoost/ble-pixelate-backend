@@ -60,6 +60,27 @@ class Game {
     }
   }
 
+  static X_MARK_SIZE = 12;
+  mark_x(controllerId) {
+    let player = this.players[controllerId];
+    
+    this.display.line({
+      x: player.location.x-Game.X_MARK_SIZE/2,
+      y: player.location.y-Game.X_MARK_SIZE/2
+    }, {
+      x: player.location.x+Game.X_MARK_SIZE/2,
+      y: player.location.y+Game.X_MARK_SIZE/2
+    }, player.color);
+    
+    this.display.line({
+      x: player.location.x+Game.X_MARK_SIZE/2,
+      y: player.location.y-Game.X_MARK_SIZE/2
+    }, {
+      x: player.location.x-Game.X_MARK_SIZE/2,
+      y: player.location.y+Game.X_MARK_SIZE/2
+    }, player.color);
+  }
+
   /////////////// Internal methods /////////////////
   static SPAWN_DISTANCE = 10;
 
