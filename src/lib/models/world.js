@@ -46,6 +46,21 @@ class World {
     }
   }
 
+  generate_spawn_locations(total, {distanceFromMid = 10} = {}) {
+    // Spawn locations in a circle around mid
+    let deltaAngle = (360 / total * Math.PI) / 180;
+    let offset = Math.random();   // Randomize start locations each game
+
+    let locations = Array(total).fill(null);
+    for (let i = 0; i < locations.length; i++) {
+      locations[i] = {
+        x: this.width/2 + Math.floor(distanceFromMid * Math.cos(offset + i * deltaAngle)),
+        y: this.height/2 + Math.floor(distanceFromMid * Math.sin(offset + i * deltaAngle))
+      }
+    }
+    return locations;
+  }
+
 }
 
 module.exports = World;

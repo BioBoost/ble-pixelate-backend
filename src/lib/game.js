@@ -5,6 +5,7 @@ const MemeTvRenderer = require('./renderers/meme_tv_renderer');
 const World = require('./models/world');
 const PixelEngine = require('./engine/pixel_engine');
 const Controller = require('./controller');
+const Color = require('color');
 
 class Game {
   static PLAYFIELD_WIDTH = 96;
@@ -19,22 +20,20 @@ class Game {
     // Create the models
     this.world = new World();
     this.engine.register_model(this.world);
-    this.players = [];
     this.controllers = [];
   }
 
-  add_player(name, controllerId, color) {
-    this.players[controllerId] = new Player(name, this.world, color);
-    this.engine.register_model(this.players[controllerId]);
-
-    // Also need to create controller
-    this.controllers[controllerId] = new Controller(controllerId, this.players[controllerId]);
-    this.engine.register_model(this.controllers[controllerId]);
+  // players = [ { name, controller_id, color }]
+  add_players(players) {
+    let spawnLocations = this.world.generate_spawn_locations(players.length);
+    for (let i = 0; i < players.length; i++) {
+      let player = this.create_player(players[i].name, players[i].color, spawnLocations[i]);
+      this.controllers[players[i].controller_id] = this.create_controller(players[i].controller_id, player);
+    }
   }
 
   start() {
     // Fire up the engine
-    this.spawn_all_players();
     this.engine.init();
   }
 
@@ -48,25 +47,18 @@ class Game {
   }
 
   /////////////// Internal methods /////////////////
-  static SPAWN_DISTANCE = 10;
 
-  // Is this not something the world should provide ????
-  // We can do that if we make the server provide us with all players at once
-  spawn_all_players() {
-    // Spawn players in a circle around mid
-    let numberOfPlayers = Object.keys(this.players).length;
-    let deltaAngle = (360 / numberOfPlayers * Math.PI) / 180;
-    let offset = Math.random();   // Randomize start locations each game
+  create_player(name, color, spawnLocation) {
+    let player = new Player(name, this.world, new Color(color));
+    player.spawn(spawnLocation);
+    this.engine.register_model(player);
+    return player;
+  }
 
-    let i = 0;
-    Object.values(this.players).forEach((player) => {
-      player.spawn({
-        x: Game.PLAYFIELD_WIDTH/2 + Math.floor(Game.SPAWN_DISTANCE * Math.cos(offset + i * deltaAngle)),
-        y: Game.PLAYFIELD_HEIGHT/2 + Math.floor(Game.SPAWN_DISTANCE * Math.sin(offset + i * deltaAngle))
-      });
-      i++;
-      console.log(`Player ${JSON.stringify(player)} spawned`);
-    });
+  create_controller(id, player) {
+    let controller = new Controller(id, player);
+    this.engine.register_model(controller);
+    return controller;
   }
 
 }

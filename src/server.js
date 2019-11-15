@@ -1,32 +1,28 @@
 const io = require('socket.io')();
 const Game = require('./lib/game');
-const Color = require('color');
 
 // Game start
 let game = new Game();
-let start = [
+let players = [
   { controller_id: 'id_pinky', name: 'nico', color: "#FF0000" },
   { controller_id: 'id_hulk', name: 'marki', color: "#00FF00" },
   { controller_id: 'id_rdr2', name: 'johhny', color: "#0000FF" },
 ];
 
-start.forEach((player) => {
-  game.add_player(player.name, player.controller_id, new Color(player.color));
-});
-
+game.add_players(players);
 game.start();
 
 // Updates are coming in
-let updates = [
-  { id: 'id_hulk', actions: ['R', 'L', 'D', 'R', 'U', 'B'] }
-];
+// let updates = [
+//   { id: 'id_hulk', actions: ['R', 'L', 'D', 'R', 'U', 'B'] }
+// ];
 
-let i = 0;
-setInterval(() => {
-  i = (i + 1) % updates[0].actions.length;
-  console.log(`Action: ${updates[0].actions[i]}`);
-  game.take_action('id_hulk', updates[0].actions[i]);
-}, 3000);
+// let i = 0;
+// setInterval(() => {
+//   i = (i + 1) % updates[0].actions.length;
+//   console.log(`Action: ${updates[0].actions[i]}`);
+//   game.take_action('id_hulk', updates[0].actions[i]);
+// }, 3000);
 
 
 // Updates are coming in
