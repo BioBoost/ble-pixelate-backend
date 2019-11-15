@@ -28,6 +28,7 @@ class Game {
 
   start() {
     // Fire up the engine
+    this.spawn_all_players();
     this.engine.init();
   }
 
