@@ -13,8 +13,14 @@ class World {
     // this renders the playfield on the display
     // If field is not owned by player, we draw nothing
     // If owned we draw colored pixel at that location
+  }
 
-
+  update(delta) {
+    // We need to do anything here ?
+  }
+  
+  claim_field(location, player) {
+    this.playfield[location.x][location.y] = player;
   }
 
 }
