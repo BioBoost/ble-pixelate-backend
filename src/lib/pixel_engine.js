@@ -21,14 +21,15 @@ class PixelEngine {
 
   start_update() {
     // Runs at constant tick rate
-    const NS_PER_SEC = 1e9;
-    let refTime = process.hrtime();
+    const NS_PER_MS = 1e6;
+    let start = process.hrtime.bigint();
     this.updateInterval = setInterval(() => {
-      refTime = process.hrtime(refTime);
-      let delta = refTime[0] * NS_PER_SEC + refTime[1];
+      let end = process.hrtime.bigint();
+      let delta = (Number)(end - start) / NS_PER_MS;
+      start = end;
+      console.log(`Tick: ${delta}ms`);
 
       this.models.forEach(model => model.update(delta));
-      console.log(`Tick: ${delta}ms`);
     }, PixelEngine.TICK_RATE);
   }
 
