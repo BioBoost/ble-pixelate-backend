@@ -1,5 +1,6 @@
 const io = require('socket.io')();
 const Game = require('./lib/game');
+const Color = require('color');
 
 // Game start
 let game = new Game();
@@ -10,34 +11,23 @@ let start = [
 ];
 
 start.forEach((player) => {
-  game.add_player(player.name, player.controller_id, player.color);
+  game.add_player(player.name, player.controller_id, new Color(player.color));
 });
-
 
 game.start();
 
-// // Updates are coming in
-// let updates = [
-//   { id: 'id_hulk', actions: ['R', 'B', 'D', 'D', 'D', 'B'] },
-//   { id: 'id_pinky', actions: ['D', 'A', 'D', 'R', 'D'] },
-//   { id: 'id_rdr2', actions: ['L', 'L', 'X'] }
-// ];
+// Updates are coming in
+let updates = [
+  { id: 'id_hulk', actions: ['R', 'L', 'D', 'R', 'U', 'B'] }
+];
 
-// updates.forEach((update) => {
-//   update.actions.forEach((action) => {
-//     switch (action) {
-//       case 'D': game.move_down(update.id, 5); break;
-//       case 'U': game.move_up(update.id, 5); break;
-//       case 'L': game.move_left(update.id, 5); break;
-//       case 'R': game.move_right(update.id, 5); break;
-//       case 'B': game.explosion(update.id); break;
-//       case 'A': game.laser(update.id); break;
-//       case 'X': game.mark_x(update.id); break;
-//     }
-//   });
-// });
+let i = 0;
+setInterval(() => {
+  i = (i + 1) % updates[0].actions.length;
+  console.log(`Action: ${updates[0].actions[i]}`);
+  game.take_action('id_hulk', updates[0].actions[i]);
+}, 3000);
 
-// game.render();
 
 // Updates are coming in
 // let updates = [

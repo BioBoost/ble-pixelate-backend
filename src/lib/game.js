@@ -1,8 +1,8 @@
 const Display = require('./display');
-const Player = require('./player');
+const Player = require('./models/player');
 const FileRenderer = require('./renderers/file_renderer');
 const MemeTvRenderer = require('./renderers/meme_tv_renderer');
-const World = require('./world');
+const World = require('./models/world');
 const PixelEngine = require('./pixel_engine');
 
 class Game {
