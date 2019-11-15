@@ -33,11 +33,16 @@ class Player {
   update(delta) {
     // here we just move a single pixel in the
     // current direction and update the world
-    if (this.direction == 'down') {
-      let newLocation = this.world.next_field(this.location, { deltaY: +1 });
-      this.move(newLocation);
-      this.world.claim_field(newLocation, this);
-    } // else if ....
+    let deltaLocation = { dx: 0, dy: 0 };
+    switch (this.direction) {
+      case 'down': deltaLocation.dy = +1; break;
+      case 'up': deltaLocation.dy = -1; break;
+      case 'left': deltaLocation.dx = -1; break;
+      case 'right': deltaLocation.dx = +1; break;
+    }
+    let newLocation = this.world.next_field(this.location, deltaLocation);
+    this.move(newLocation);
+    this.world.claim_field(newLocation, this);
   }
 
   render(display) {

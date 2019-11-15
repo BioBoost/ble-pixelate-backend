@@ -36,6 +36,19 @@ class Game {
     this.engine.kill();
   }
 
+  take_action(controllerId, action) {
+    let player = this.players[controllerId];
+    switch (action) {
+      case 'D': player.go_down(); break;
+      case 'U': player.go_up(); break;
+      case 'L': player.go_left(); break;
+      case 'R': player.go_right(); break;
+      // case 'B': game.explosion(update.id); break;
+      // case 'A': game.laser(update.id); break;
+      // case 'X': game.mark_x(update.id); break;
+    }
+  }
+
   /////////////// Internal methods /////////////////
   static SPAWN_DISTANCE = 10;
 

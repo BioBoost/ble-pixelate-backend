@@ -32,18 +32,16 @@ class World {
     this.playfield[location.x][location.y] = player;
   }
 
-  next_field(currentLocation, {deltaX = 0, deltaY = 0} = {}) {
-    console.log(`Current: ${JSON.stringify(currentLocation)}`);
+  next_field(currentLocation, {dx = 0, dy = 0} = {}) {
     if (this.enableBoundaries) {
-      console.log(`Enabling boundaries ${deltaX}, ${deltaY}`);
       return {
-        x: Math.max(0, Math.min(currentLocation.x + deltaX, this.width-1)),
-        y: Math.max(0, Math.min(currentLocation.y + deltaY, this.height-1))
+        x: Math.max(0, Math.min(currentLocation.x + dx, this.width-1)),
+        y: Math.max(0, Math.min(currentLocation.y + dy, this.height-1))
       }
     } else {
       return {
-        x: (currentLocation.x + deltaX) % this.width,
-        y: (currentLocation.y + deltaY) % this.height
+        x: (currentLocation.x + dx) % this.width,
+        y: (currentLocation.y + dy) % this.height
       }
     }
   }
