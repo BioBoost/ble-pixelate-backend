@@ -15,8 +15,8 @@ class PixelEngine {
 
   init() {
     this.models.forEach(model => model.init());
-    this.start_update();
     this.start_render();
+    this.start_update();
   } 
 
   start_update() {
