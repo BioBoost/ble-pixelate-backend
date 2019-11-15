@@ -23,8 +23,8 @@ class Player {
     this.change_direction('right');
   }
 
-  move({x = 0, y = 0} = {}) {
-    this.location = {x: x, y: y};
+  move(location = {x: 0, y: 0}) {
+    this.location = location;
   }
 
   init() {
@@ -34,8 +34,9 @@ class Player {
     // here we just move a single pixel in the
     // current direction and update the world
     if (this.direction == 'down') {
-      this.location.y++;
-      this.world.claim_field(this.location, this);
+      let newLocation = this.world.next_field(this.location, { deltaY: +1 });
+      this.move(newLocation);
+      this.world.claim_field(newLocation, this);
     } // else if ....
   }
 
