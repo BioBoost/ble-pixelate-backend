@@ -12,8 +12,7 @@ class Player {
   }
 
   move({x = 0, y = 0} = {}) {
-    this.x = x;
-    this.y = y;
+    this.location = {x: x, y: y};
   }
 
   init() {
