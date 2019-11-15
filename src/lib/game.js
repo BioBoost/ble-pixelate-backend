@@ -1,5 +1,6 @@
 const Display = require('./display');
 const Player = require('./player');
+const FileRenderer = require('./renderers/file_renderer');
 
 class Game {
 
@@ -10,6 +11,7 @@ class Game {
     this.display = new Display(Game.PLAYFIELD_WIDTH, Game.PLAYFIELD_HEIGHT);
     this.players = [];
     this.enableBoundaries = enableBoundaries;
+    this.display.add_renderer(new FileRenderer(`${__dirname}/test.png`));
   }
 
   add_player(name, controllerId, color="#00FF00") {
