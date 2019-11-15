@@ -10,11 +10,13 @@ class PixelEngine {
 
   // Order of registration determines order of rendering
   register_model(model) {
-    this.models.push();
+    this.models.push(model);
   }
 
   init() {
     this.models.forEach(model => model.init());
+    this.update();
+    this.render();
   } 
 
   update() {
@@ -32,10 +34,10 @@ class PixelEngine {
   render() {
     // Runs as fast as the display allows us
     setInterval(() => {
+      this.display.clear();
       this.models.forEach(model => model.render(this.display));
     }, PixelEngine.REFRESH_RATE);
   }
-
 }
 
 module.exports = PixelEngine;
