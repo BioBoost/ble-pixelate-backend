@@ -60,7 +60,7 @@ class Game {
 
     let i = 0;
     Object.values(this.players).forEach((player) => {
-      player.move({
+      player.spawn({
         x: Game.PLAYFIELD_WIDTH/2 + Math.floor(Game.SPAWN_DISTANCE * Math.cos(offset + i * deltaAngle)),
         y: Game.PLAYFIELD_HEIGHT/2 + Math.floor(Game.SPAWN_DISTANCE * Math.sin(offset + i * deltaAngle))
       });
