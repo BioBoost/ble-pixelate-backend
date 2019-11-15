@@ -4,11 +4,16 @@ class Player {
     this.name = name;
     this.direction = 'D';
     this.world = world;
-    this.location = { x: 0, y: 0 }
+    this.move({ x: 0, y: 0 });
   }
 
   change_direction(direction) {
     this.direction = direction;
+  }
+
+  move({x = 0, y = 0} = {}) {
+    this.x = x;
+    this.y = y;
   }
 
   init() {
