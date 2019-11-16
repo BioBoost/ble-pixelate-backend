@@ -6,7 +6,6 @@ class Player {
     this.color = color;
     this.claimColor = color.darken(0.5);
     this.spawn();
-    this.stop();
   }
 
   go_up() { 
@@ -27,25 +26,6 @@ class Player {
   go_right() { 
     this.change_direction('right');
     this.move_in_current_direction();
-  }
-
-  stop() {
-    this.change_direction('none');
-  }
-
-  move_in_current_direction() {
-    if (this.direction === 'none') return;
-
-    let deltaLocation = { dx: 0, dy: 0 };
-    switch (this.direction) {
-      case 'down': deltaLocation.dy = +1; break;
-      case 'up': deltaLocation.dy = -1; break;
-      case 'left': deltaLocation.dx = -1; break;
-      case 'right': deltaLocation.dx = +1; break;
-    }
-    let newLocation = this.world.next_field(this.location, deltaLocation);
-    this.move(newLocation);
-    this.world.claim_field(newLocation, this);
   }
 
   explode() {
@@ -87,6 +67,19 @@ class Player {
   }
 
   /////// Private methods ///////////////
+
+  move_in_current_direction() {
+    let deltaLocation = { dx: 0, dy: 0 };
+    switch (this.direction) {
+      case 'down': deltaLocation.dy = +1; break;
+      case 'up': deltaLocation.dy = -1; break;
+      case 'left': deltaLocation.dx = -1; break;
+      case 'right': deltaLocation.dx = +1; break;
+    }
+    let newLocation = this.world.next_field(this.location, deltaLocation);
+    this.move(newLocation);
+    this.world.claim_field(newLocation, this);
+  }
 
   change_direction(direction) {
     this.direction = direction;

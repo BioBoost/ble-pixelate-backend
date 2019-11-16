@@ -4,6 +4,7 @@ class Controller {
     this.id = id;
     this.player = player;
     this.actions = [];
+    this.previousAction = '0';
   }
 
   queue_action(action) {
@@ -13,13 +14,14 @@ class Controller {
   init() {
   }
 
-  update() {
+  update(delta) {
     let action = this.actions.pop();
 
+    if (action === undefined && ['U', 'D', 'L', 'R'].includes(this.previousAction)) {
+      action = this.previousAction;
+    }
+
     switch (action) {
-      case undefined:
-        this.player.move_in_current_direction();
-        break;
       case 'U':
         this.player.go_up();
         break;
@@ -41,10 +43,9 @@ class Controller {
       case 'B':
         console.log('Player goes boom');
         break;
-      case '0':
-        this.player.stop();
-        break;
     }
+
+    this.previousAction = action;
   }
 
   render() {
