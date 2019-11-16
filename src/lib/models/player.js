@@ -32,8 +32,9 @@ class Player {
     // Claim pixels in boundary of circle
   }
 
-  shoot_laster() {
+  shoot_laser() {
     // use direction to claim all pixels in row or column
+    console.log("Shooting lasers");
   }
 
   spawn(location = {x: 0, y: 0}) {

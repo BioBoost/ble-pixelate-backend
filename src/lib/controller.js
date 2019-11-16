@@ -39,6 +39,7 @@ class Controller {
         break;
       case 'A':
         console.log('Laser time');
+        this.player.shoot_laser();
         break;
       case 'B':
         console.log('Player goes boom');
