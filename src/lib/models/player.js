@@ -6,6 +6,7 @@ class Player {
     this.color = color;
     this.claimColor = color.darken(0.5);
     this.spawn();
+    this.stop();
   }
 
   go_up() { 
@@ -28,7 +29,13 @@ class Player {
     this.move_in_current_direction();
   }
 
+  stop() {
+    this.change_direction('none');
+  }
+
   move_in_current_direction() {
+    if (this.direction === 'none') return;
+
     let deltaLocation = { dx: 0, dy: 0 };
     switch (this.direction) {
       case 'down': deltaLocation.dy = +1; break;
