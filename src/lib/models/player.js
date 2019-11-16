@@ -10,25 +10,25 @@ class Player {
 
   go_up() { 
     this.change_direction('up');
-    this.move_in_direction();
+    this.move_in_current_direction();
   }
 
   go_down() { 
     this.change_direction('down');
-    this.move_in_direction();
+    this.move_in_current_direction();
   }
 
   go_left() { 
     this.change_direction('left');
-    this.move_in_direction();
+    this.move_in_current_direction();
   }
 
   go_right() { 
     this.change_direction('right');
-    this.move_in_direction();
+    this.move_in_current_direction();
   }
 
-  move_in_direction() {
+  move_in_current_direction() {
     let deltaLocation = { dx: 0, dy: 0 };
     switch (this.direction) {
       case 'down': deltaLocation.dy = +1; break;
