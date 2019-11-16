@@ -3,9 +3,10 @@ class PixelEngine {
   static TICK_RATE = 150;
   static REFRESH_RATE = 1000;
 
-  constructor(display) {
+  constructor(display, { debug = false } = {}) {
     this.display = display;
     this.models = [];
+    this.debug = debug;
   }
 
   // Order of registration determines order of rendering
@@ -21,13 +22,12 @@ class PixelEngine {
 
   start_update() {
     // Runs at constant tick rate
-    const NS_PER_MS = 1e6;
     let start = process.hrtime.bigint();
     this.updateInterval = setInterval(() => {
       let end = process.hrtime.bigint();
-      let delta = (Number)(end - start) / NS_PER_MS;
+      let delta = this.calculate_delta_ms(start, end);
       start = end;
-      console.log(`Tick: ${delta}ms`);
+      if (this.debug) console.log(`Tick: ${delta}ms`);
 
       this.models.forEach(model => model.update(delta));
     }, PixelEngine.TICK_RATE);
@@ -36,10 +36,13 @@ class PixelEngine {
   start_render() {
     // Runs as fast as the display allows us
     this.renderInterval = setInterval(() => {
+      let start = process.hrtime.bigint();
       this.display.clear();
       this.models.forEach(model => model.render(this.display));
-      console.log(`Rendering`);
       this.display.render();
+      let end = process.hrtime.bigint();
+      const renderTime = this.calculate_delta_ms(start, end);
+      if (this.debug) console.log(`Rendering took ${renderTime}ms.`);
     }, PixelEngine.REFRESH_RATE);
   }
 
@@ -47,6 +50,13 @@ class PixelEngine {
     if (this.updateInterval) clearInterval(this.updateInterval);
     if (this.renderInterval) clearInterval(this.renderInterval);
   }
+
+  ///////////// Internal methods
+  calculate_delta_ms(start, end) {
+    const NS_PER_MS = 1e6;
+    return (Number)(end - start) / NS_PER_MS;
+  }
+
 }
 
 module.exports = PixelEngine;
