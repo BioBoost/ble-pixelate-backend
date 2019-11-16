@@ -12,14 +12,8 @@ class Game {
   static PLAYFIELD_HEIGHT = 64;
 
   constructor() {
-    // Setup the engine
-    this.display = new Display(Game.PLAYFIELD_WIDTH, Game.PLAYFIELD_HEIGHT);
-    this.display.add_renderer(new FileRenderer(`${__dirname}/test.png`));
-    this.engine = new PixelEngine(this.display);
-
-    // Create the models
-    this.world = new World();
-    this.engine.register_model(this.world);
+    this.setup_engine();
+    this.create_world();
     this.controllers = [];
   }
 
@@ -47,6 +41,17 @@ class Game {
   }
 
   /////////////// Internal methods /////////////////
+
+  setup_engine() {
+    this.display = new Display(Game.PLAYFIELD_WIDTH, Game.PLAYFIELD_HEIGHT);
+    this.display.add_renderer(new FileRenderer(`${__dirname}/test.png`));
+    this.engine = new PixelEngine(this.display);
+  }
+
+  create_world() {
+    this.world = new World();
+    this.engine.register_model(this.world);
+  }
 
   create_player(name, color, spawnLocation) {
     let player = new Player(name, this.world, new Color(color));
