@@ -3,32 +3,48 @@ class Controller {
   constructor(id, player) {
     this.id = id;
     this.player = player;
+    this.actions = [];
   }
 
   queue_action(action) {
-    // this comes from the game
-    // this.actions.push(action);
+    this.actions.unshift(action);
   }
 
   init() {
   }
 
   update() {
-    // let size = this.actions.length;
-    // for (size) : action = pop
-    // if (.....) 
-    //   player.go_up
-    //   player.shoot
+    let action = this.actions.pop();
 
-    // switch (action) {
-    //   case 'D': player.go_down(); break;
-    //   case 'U': player.go_up(); break;
-    //   case 'L': player.go_left(); break;
-    //   case 'R': player.go_right(); break;
-    //   // case 'B': game.explosion(update.id); break;
-    //   // case 'A': game.laser(update.id); break;
-    //   // case 'X': game.mark_x(update.id); break;
-    // }
+    switch (action) {
+      case undefined:
+        this.player.move_in_current_direction();
+        break;
+      case 'U':
+        this.player.go_up();
+        break;
+      case 'D':
+        this.player.go_down();
+        break;
+      case 'L':
+        this.player.go_left();
+        break;
+      case 'R':
+        this.player.go_right();
+        break;
+      case 'X':
+        console.log('X marks the spot');
+        break;
+      case 'A':
+        console.log('Laser time');
+        break;
+      case 'B':
+        console.log('Player goes boom');
+        break;
+      case '0':
+        this.player.stop();
+        break;
+    }
   }
 
   render() {
