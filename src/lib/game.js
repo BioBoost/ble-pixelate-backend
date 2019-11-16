@@ -36,7 +36,7 @@ class Game {
   }
 
   take_action(controllerId, action) {
-    let controller = this.controller[controllerId];
+    let controller = this.controllers[controllerId];
     controller.queue_action(action);
   }
 
