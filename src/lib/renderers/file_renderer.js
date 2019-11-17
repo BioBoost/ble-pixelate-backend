@@ -10,7 +10,6 @@ class FileRenderer {
   render(canvas) {
     const out = fs.createWriteStream(this.filename);
     canvas.createPNGStream().pipe(out);
-    out.on('finish', () => console.log('The PNG file was created.'));
   }
 
 }
