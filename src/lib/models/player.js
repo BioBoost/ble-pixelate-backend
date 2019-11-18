@@ -1,3 +1,5 @@
+const Laser = require('../weapons/laser');
+
 class Player {
 
   constructor(name, world, color) {
@@ -7,6 +9,7 @@ class Player {
     this.claimColor = color.darken(0.5);
     this.spawn();
     this.change_direction('down');
+    this.laser = new Laser();
   }
 
   go_up() { 
@@ -34,16 +37,7 @@ class Player {
   }
 
   shoot_laser() {
-    // use direction to claim all pixels in row or column
-    let deltaLocation = this.determine_delta_direction();
-
-    let laserLength = (this.direction == 'down' || this.direction == 'up' ? this.world.height : this.world.width);
-    let currentField = Object.assign({}, this.location);
-    for (let i = 0; i < laserLength; i++) {
-      let claimLocation = this.world.next_field(currentField, deltaLocation);
-      this.world.claim_field(claimLocation, this);
-      currentField = claimLocation;
-    }
+    this.laser.activate(this.world, this);
   }
 
   spawn(location = {x: 0, y: 0}) {
