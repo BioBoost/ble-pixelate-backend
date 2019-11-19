@@ -1,6 +1,6 @@
 const Laser = require('../weapons/laser');
 const XMark = require('../weapons/x_mark');
-
+const Bomb = require('../weapons/bomb');
 class Player {
 
   constructor(name, world, color) {
@@ -12,6 +12,7 @@ class Player {
     this.change_direction('down');
     this.laser = new Laser();
     this.xmark = new XMark();
+    this.bomb = new Bomb();
   }
 
   go_up() { 
@@ -35,7 +36,7 @@ class Player {
   }
 
   explode() {
-    // Claim pixels in boundary of circle
+    this.bomb.activate(this.world, this);
   }
 
   shoot_laser() {
