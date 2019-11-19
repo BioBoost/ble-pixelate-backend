@@ -19,3 +19,5 @@ class Laser {
     this.shotsLeft--;
   }
 }
+
+module.exports = Laser;
