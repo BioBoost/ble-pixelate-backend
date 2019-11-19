@@ -1,4 +1,5 @@
 const Laser = require('../weapons/laser');
+const XMark = require('../weapons/x_mark');
 
 class Player {
 
@@ -10,6 +11,7 @@ class Player {
     this.spawn();
     this.change_direction('down');
     this.laser = new Laser();
+    this.xmark = new XMark();
   }
 
   go_up() { 
@@ -38,6 +40,10 @@ class Player {
 
   shoot_laser() {
     this.laser.activate(this.world, this);
+  }
+
+  x_mark() {
+    this.xmark.activate(this.world, this);
   }
 
   spawn(location = {x: 0, y: 0}) {

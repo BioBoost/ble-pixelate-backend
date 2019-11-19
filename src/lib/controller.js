@@ -35,7 +35,7 @@ class Controller {
         this.player.go_right();
         break;
       case 'X':
-        console.log('X marks the spot');
+        this.player.x_mark();
         break;
       case 'A':
         this.player.shoot_laser();
