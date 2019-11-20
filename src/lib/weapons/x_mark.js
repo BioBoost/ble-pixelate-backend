@@ -1,5 +1,5 @@
 class XMark {
-    static SIZE = 8;
+    static SIZE = 32;
 
     constructor() {
       this.shotsLeft = 3;

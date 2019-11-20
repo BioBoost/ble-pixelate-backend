@@ -45,6 +45,7 @@ class Game {
   setup_engine() {
     this.display = new Display(Game.PLAYFIELD_WIDTH, Game.PLAYFIELD_HEIGHT);
     this.display.add_renderer(new FileRenderer(`${__dirname}/test.png`));
+    this.display.add_renderer(new MemeTvRenderer(`http://172.16.0.70:3000`));
     this.engine = new PixelEngine(this.display);
   }
 
