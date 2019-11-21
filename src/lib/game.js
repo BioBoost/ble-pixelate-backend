@@ -53,7 +53,11 @@ class Game extends EventEmitter {
 
   take_action(controllerId, action) {
     let controller = this.controllers[controllerId];
-    controller.queue_action(action);
+    if (controller) {
+      controller.queue_action(action);
+    } else {
+      console.log(`Update for unknown controller id ${controllerId}`);
+    }
   }
 
   /////////////// Internal methods /////////////////
