@@ -1,9 +1,13 @@
 class World {
 
-  constructor({enableBoundaries = true, width = 96, height = 64} = {}) {
+  constructor({enableBoundaries = true, width = 96, height = 64, xOffset = 0, yOffset = 0} = {}) {
     this.width = width;
     this.height = height;
     this.enableBoundaries = enableBoundaries;
+    this.xOffset = xOffset;
+    this.yOffset = yOffset;
+
+    console.log("Height = " + this.height);
   }
 
   init() {
@@ -18,7 +22,7 @@ class World {
       for (let y = 0; y < this.height; y++) {
         let owner = this.playfield[x][y];
         if (owner) {
-          display.pixel(x, y, owner.claim_color());
+          display.pixel(x+this.xOffset, y+this.yOffset, owner.claim_color());
         }
       }
     }

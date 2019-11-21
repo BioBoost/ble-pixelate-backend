@@ -9,8 +9,8 @@ const Color = require('color');
 const EventEmitter = require( 'events' );
 
 class Game extends EventEmitter {
-  static PLAYFIELD_WIDTH = 96;
-  static PLAYFIELD_HEIGHT = 64;
+  static DISPLAY_WIDTH = 96;
+  static DISPLAY_HEIGHT = 64;
   static GAME_STATE_UPDATE_MS = 1000;
 
   constructor() {
@@ -54,19 +54,26 @@ class Game extends EventEmitter {
   /////////////// Internal methods /////////////////
 
   setup_engine() {
-    this.display = new Display(Game.PLAYFIELD_WIDTH, Game.PLAYFIELD_HEIGHT);
+    this.display = new Display(Game.DISPLAY_WIDTH, Game.DISPLAY_HEIGHT);
     this.display.add_renderer(new FileRenderer(`${__dirname}/test.png`));
     this.display.add_renderer(new MemeTvRenderer(`http://172.16.0.70:3000`));
     this.engine = new PixelEngine(this.display);
   }
 
   create_world() {
-    this.world = new World();
+    this.world = new World({
+      width: Game.DISPLAY_WIDTH,
+      height: Game.DISPLAY_HEIGHT-1,
+      yOffset: 1
+    });    // -1 for progress bar
+
     this.engine.register_model(this.world);
   }
 
   create_player(name, color, spawnLocation) {
-    let player = new Player(name, this.world, new Color(color));
+    let player = new Player(name, this.world, new Color(color), {
+      yOffset: 1
+    });   // Hate to do this. Needs to be refactored
     player.spawn(spawnLocation);
     this.engine.register_model(player);
     return player;

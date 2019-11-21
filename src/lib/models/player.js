@@ -3,7 +3,10 @@ const XMark = require('../weapons/x_mark');
 const Bomb = require('../weapons/bomb');
 class Player {
 
-  constructor(name, world, color) {
+  // Refactor needed ! It cant be correct that player needs to know about the offset
+  // Think player should be known by world and worlds should use the player location
+  // to draw the player inside of the world
+  constructor(name, world, color, { xOffset = 0, yOffset = 0} = {}) {
     this.name = name;
     this.world = world;
     this.color = color;
@@ -13,6 +16,8 @@ class Player {
     this.laser = new Laser();
     this.xmark = new XMark();
     this.bomb = new Bomb();
+    this.xOffset = xOffset;
+    this.yOffset = yOffset;
   }
 
   go_up() { 
@@ -66,7 +71,7 @@ class Player {
 
   render(display) {
     // Just draw the head as a highlighted pixel
-    display.pixel(this.location.x, this.location.y, this.color);
+    display.pixel(this.xOffset + this.location.x, this.yOffset + this.location.y, this.color);
   }
 
   color() {
