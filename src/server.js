@@ -12,20 +12,23 @@ const Game = require('./lib/game');
 //   { id: 'id_pinky', actions: ['A', 'D', 'D', 'R', '0'] }
 // ]
 
-let game = null;
+let game = new Game();
 
 io.on('connection', client => {
   console.log('Frontend connected');
+  game.on('gamestate', (state) => {
+    client.emit('gamestate', JSON.stringify(state))
+    console.log(`Gamestate: ${JSON.stringify(state)}`);
+  });
 
   client.on('start', (players) => {
     console.log(`Starting the game with the following players ${players}`);
-    game = new Game(false);
-    game.on('gamestate', (state) => {
-      client.emit('gamestate', JSON.stringify(state))
-      console.log(`Gamestate: ${JSON.stringify(state)}`);
-    });
-    game.add_players(JSON.parse(players));
-    game.start();
+    game.start(JSON.parse(players));
+  });
+
+  client.on('stop', () => {
+    console.log(`Stopping the game with`);
+    game.stop();
   });
 
   client.on('update', (updates) => {
@@ -39,6 +42,7 @@ io.on('connection', client => {
   
   client.on('disconnect', function(){
     console.log('Frontend disconnected');
+    game.removeAllListeners();
   });
 });
 

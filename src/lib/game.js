@@ -17,22 +17,13 @@ class Game extends EventEmitter {
     super();
     this.setup_engine();
     this.create_world();
+  }
+
+  start(players, duration=60) {
     this.controllers = [];
-
     this.reset_game_state();
-  }
-
-  // players = [ { name, controller_id, color }]
-  add_players(players) {
-    let spawnLocations = this.world.generate_spawn_locations(players.length);
-    for (let i = 0; i < players.length; i++) {
-      let player = this.create_player(players[i].name, players[i].color, spawnLocations[i]);
-      this.controllers[players[i].controller_id] = this.create_controller(players[i].controller_id, player);
-    }
-  }
-
-  start(duration=60) {
     this.gameState.timeleft = duration;
+    this.add_players(players);
 
     // Fire up the engine
     this.engine.init();
@@ -85,6 +76,15 @@ class Game extends EventEmitter {
     let controller = new Controller(id, player);
     this.engine.register_model(controller);
     return controller;
+  }
+
+  // players = [ { name, controller_id, color }]
+  add_players(players) {
+    let spawnLocations = this.world.generate_spawn_locations(players.length);
+    for (let i = 0; i < players.length; i++) {
+      let player = this.create_player(players[i].name, players[i].color, spawnLocations[i]);
+      this.controllers[players[i].controller_id] = this.create_controller(players[i].controller_id, player);
+    }
   }
 
   start_game_timer() {
