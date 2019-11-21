@@ -118,7 +118,6 @@ class Game extends EventEmitter {
   build_player_stats() {
     // Grouped field by player
     let playerOwnedFields = this.world.determine_field_ownage();
-    console.log('Fields : ' + playerOwnedFields.length);
     console.log(`${playerOwnedFields.map(f => f.count)} <+> ${playerOwnedFields.map(f => f.player.name)}`)
 
     // Need to combine player and controller id

@@ -18,7 +18,7 @@ io.on('connection', client => {
   console.log('Frontend connected');
   game.on('gamestate', (state) => {
     client.emit('gamestate', JSON.stringify(state))
-    console.log(`Gamestate: ${JSON.stringify(state)}`);
+    console.log(`${state.timeleft} seconds left`);
   });
 
   client.on('start', (players) => {
@@ -32,8 +32,6 @@ io.on('connection', client => {
   });
 
   client.on('update', (updates) => {
-    console.log(`Getting updates ${updates}`);
-
     let updatesObj = JSON.parse(updates);
     updatesObj.forEach((update) => {
       update.actions.forEach((action) => game.take_action(update.id, action) );
