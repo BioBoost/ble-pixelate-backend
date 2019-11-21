@@ -20,6 +20,10 @@ io.on('connection', client => {
   client.on('start', (players) => {
     console.log(`Starting the game with the following players ${players}`);
     game = new Game(false);
+    game.on('gamestate', (state) => {
+      client.emit('gamestate', JSON.stringify(state))
+      console.log(`Gamestate: ${JSON.stringify(state)}`);
+    });
     game.add_players(JSON.parse(players));
     game.start();
   });
