@@ -3,8 +3,6 @@ class Controller {
   constructor(id, player) {
     this.id = id;
     this.player = player;
-    this.actions = [];
-    this.previousAction = '0';
   }
 
   queue_action(action) {
@@ -12,6 +10,8 @@ class Controller {
   }
 
   init() {
+    this.actions = [];
+    this.previousAction = '0';
   }
 
   update(delta) {
