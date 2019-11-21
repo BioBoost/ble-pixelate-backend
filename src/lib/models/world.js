@@ -61,6 +61,22 @@ class World {
     return locations;
   }
 
+  determine_field_ownage() {
+    let field_ownage = [];
+    
+    this.playfield.flat().forEach((field) => {
+      if (field != null) {
+        let player_field = field_ownage.filter(ownage => ownage.player === field);
+        if (player_field.length > 0) {
+          player_field[0].count++;
+        } else {
+          field_ownage.push( { player: field, count: 1});
+        }
+      }
+    });
+    return field_ownage;
+  }
+
 }
 
 module.exports = World;

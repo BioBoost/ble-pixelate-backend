@@ -100,12 +100,38 @@ class Game extends EventEmitter {
   reset_game_state() {
     this.gameState = {
       state: 'stopped',
-      timeleft: 0
+      timeleft: 0,
+      stats: []
     }
   }
 
   emit_game_state() {
+    let stats = this.build_player_stats();
+    this.gameState.stats = stats;
     this.emit('gamestate', this.gameState);
+  }
+
+  build_player_stats() {
+    // Grouped field by player
+    let playerOwnedFields = this.world.determine_field_ownage();
+
+    // Need to combine player and controller id
+    let playerStats = Object.values(this.controllers).map((controller) => {
+      let stats = {
+        id: controller.id,
+        player: controller.player.name,
+        fieldcount: 0
+      };
+
+      playerOwnedFields.filter((field) => { field.player === controller.player});
+      if (playerOwnedFields.length > 0) {
+        stats.fieldcount = playerOwnedFields[0].count;
+      }
+
+      return stats;
+    });
+
+    return playerStats;
   }
 
 }
