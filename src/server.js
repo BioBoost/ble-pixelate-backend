@@ -2,14 +2,14 @@ const io = require('socket.io')();
 const Game = require('./lib/game');
 
 // let players = [
-//   { controller_id: 'id_pinky', name: 'nico', color: "#FF0000" },
-//   { controller_id: 'id_hulk', name: 'marki', color: "#00FF00" },
-//   { controller_id: 'id_rdr2', name: 'johhny', color: "#0000FF" },
+//   { controller_id: 'red', name: 'nico', color: "#FF0000" },
+//   { controller_id: 'green', name: 'marki', color: "#00FF00" },
+//   { controller_id: 'blue', name: 'johhny', color: "#0000FF" },
 // ];
 
 // let updates = [
-//   { id: 'id_hulk', actions: ['R', 'D', 'D', 'X', 'R', 'R'] },
-//   { id: 'id_pinky', actions: ['A', 'D', 'D', 'R', '0'] }
+//   { id: 'red', actions: ['R', 'D', 'D', 'X', 'R', 'R'] },
+//   { id: 'green', actions: ['A', 'D', 'D', 'R', '0'] }
 // ]
 
 let game = new Game();
