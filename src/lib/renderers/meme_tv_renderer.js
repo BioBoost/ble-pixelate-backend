@@ -25,6 +25,9 @@ class MemeTvRenderer {
         }
       })
       .then(function (response) {
+        if (response.status != 200) {
+          console.log(`Got ${response.status} HTTP response status`);
+        }
       })
       .catch(function (error) {
         console.log("Failed to upload image to meme tv");
