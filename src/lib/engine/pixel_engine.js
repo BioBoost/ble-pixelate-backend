@@ -1,7 +1,7 @@
 class PixelEngine {
 
   static TICK_RATE = 20;
-  static REFRESH_RATE = 120;
+  static REFRESH_RATE = 100;
 
   constructor(display, { debug = false } = {}) {
     this.display = display;
