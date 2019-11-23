@@ -25,10 +25,9 @@ class MemeTvRenderer {
         }
       })
       .then(function (response) {
-        // console.log("Send png to meme tv");
       })
       .catch(function (error) {
-        console.log(error);
+        console.log("Failed to upload image to meme tv");
       });
     })
   }
