@@ -1,5 +1,5 @@
 class Bomb {
-    static RADIUS = 10;
+    static RADIUS = 6;
 
     constructor() {
       this.shotsLeft = 3;
