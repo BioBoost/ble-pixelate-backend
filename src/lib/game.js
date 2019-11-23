@@ -77,7 +77,7 @@ class Game extends EventEmitter {
   }
 
   create_player(name, color, spawnLocation) {
-    let player = new Player(name, this.world, new Color(color));
+    let player = new Player(name, this.world, new Color(color).darken(0.3));
     player.spawn(spawnLocation);
     this.engine.register_model(player);
     return player;
