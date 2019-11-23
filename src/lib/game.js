@@ -17,9 +17,14 @@ class Game extends EventEmitter {
     super();
     this.setup_engine();
     this.create_world();
+    this.reset_game_state();
   }
 
   start(players, duration=60) {
+    if (this.gameState.state == 'started') {
+      this.stop();
+    }
+
     this.controllers = [];
     this.reset_game_state();
     this.gameState.timeleft = duration;
