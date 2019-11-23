@@ -32,12 +32,16 @@ class Game extends EventEmitter {
     this.gameState.timeleft = duration;
     this.add_players(players);
 
-    // Fire up the engine
-    this.engine.init();
+    if (players.length > 0) {
+      // Fire up the engine
+      this.engine.init();
 
-    this.gameState.state = 'started';
-    this.start_game_timer();
-    this.emit_game_state();
+      this.gameState.state = 'started';
+      this.start_game_timer();
+      this.emit_game_state();
+    } else {
+      console.log('Cant start game without players');
+    }
   }
 
   stop() {
