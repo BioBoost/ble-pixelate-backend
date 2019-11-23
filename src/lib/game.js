@@ -25,6 +25,8 @@ class Game extends EventEmitter {
       this.stop();
     }
 
+    this.engine.clear_models();
+    this.create_world();
     this.controllers = [];
     this.reset_game_state();
     this.gameState.timeleft = duration;

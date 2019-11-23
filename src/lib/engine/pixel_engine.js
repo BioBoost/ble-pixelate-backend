@@ -5,7 +5,7 @@ class PixelEngine {
 
   constructor(display, { debug = false } = {}) {
     this.display = display;
-    this.models = [];
+    this.clear_models();
     this.debug = debug;
   }
 
@@ -14,7 +14,12 @@ class PixelEngine {
     this.models.push(model);
   }
 
+  clear_models() {
+    this.models = [];
+  }
+
   init() {
+    this.kill();
     this.models.forEach(model => model.init());
     this.start_render();
     this.start_update();
